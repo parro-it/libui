@@ -67,9 +67,9 @@ endif()
 
 if(BUILD_32)
 
-  CMAKE_GENERATOR_PLATFORM=ia32
+  set(CMAKE_GENERATOR_PLATFORM ia32)
 else()
-  CMAKE_GENERATOR_PLATFORM=x64
+  set(CMAKE_GENERATOR_PLATFORM x64)
 endif()
 
 # common flags
