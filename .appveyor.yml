@@ -63,8 +63,8 @@ after_build:
     - set ARTIFACTS_TMP_PATH=C:\tmp\tmp-artifacts
     - mkdir %ARTIFACTS_TMP_PATH%
     - copy %OUTPUT_FOLDER%\libui.* %ARTIFACTS_TMP_PATH%
-    - copy ../ui.h %ARTIFACTS_PATH%
-    - copy ../ui_windows.h %ARTIFACTS_PATH%
+    - copy ..\ui.h %ARTIFACTS_PATH%
+    - copy ..\ui_windows.h %ARTIFACTS_PATH%
     - 7z a -ttar libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar %ARTIFACTS_TMP_PATH%\*.*
     - 7z a -tgzip libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar.gz libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar
     - del %ARTIFACTS_TMP_PATH%\*.*
