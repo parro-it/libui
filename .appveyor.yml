@@ -67,7 +67,7 @@ after_build:
     - copy ..\ui_windows.h %ARTIFACTS_PATH%
     - 7z a -ttar libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar %ARTIFACTS_TMP_PATH%\*.*
     - 7z a -tgzip libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar.gz libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar
-    - del %ARTIFACTS_TMP_PATH%\*.*
+    - del /F /Q %ARTIFACTS_TMP_PATH%\*.*
     - copy %OUTPUT_FOLDER%\*.* %ARTIFACTS_TMP_PATH%
     - 7z a -ttar libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar %ARTIFACTS_TMP_PATH%\*.*
     - 7z a -tgzip libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar.gz libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar
