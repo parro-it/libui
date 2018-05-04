@@ -1,0 +1,46 @@
+version: 'build #{build}'
+
+environment:
+  matrix:
+    - BUILD_TYPE: 386_mingw_static
+      MINGW_PATH: C:\msys64\mingw32\bin
+      CMAKE_FLAGS: -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+
+    - BUILD_TYPE: 386_msvc_static
+      CMAKE_FLAGS: -G "Visual Studio 12 2013" -DBUILD_SHARED_LIBS=OFF
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+
+    - BUILD_TYPE: 386_shared
+      CMAKE_FLAGS: -G "Visual Studio 12 2013"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+
+    - BUILD_TYPE: amd64_mingw_static
+      MINGW_PATH: C:\msys64\mingw64\bin
+      CMAKE_FLAGS: -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+
+    - BUILD_TYPE: amd64_msvc_static
+      CMAKE_FLAGS: -G "Visual Studio 12 2013 Win64" -DBUILD_SHARED_LIBS=OFF
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+
+    - BUILD_TYPE: amd64_shared
+      CMAKE_FLAGS: -G "Visual Studio 12 2013 Win64"
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+
+
+before_build:
+    - if defined MINGW_PATH (
+        set "PATH=%MINGW_PATH%;%PATH:C:\Program Files\Git\usr\bin;=%"
+      )
+
+build_script:
+    - md build && cd build && cmake %CMAKE_FLAGS% ..
+    - if defined MINGW_PATH (
+        mingw32-make tester examples
+      ) else (
+        msbuild libui.sln /t:Build /p:Configuration=Release
+      )
+
+after_build:
+    - dir /S out
