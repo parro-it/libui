@@ -10,13 +10,13 @@ environment:
       MINGW_PATH: C:\msys64\mingw32\bin
       CMAKE_FLAGS: -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      ARTIFACT_PREFIX: libui-static-mingw-ia32
+      ARTIFACT_PREFIX: static-mingw-ia32
       OUTPUT_FOLDER: out
 
     - BUILD_TYPE: 386_msvc_static
       CMAKE_FLAGS: -G "Visual Studio 12 2013" -DBUILD_SHARED_LIBS=OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      ARTIFACT_PREFIX: libui-static-windows-ia32
+      ARTIFACT_PREFIX: static-windows-ia32
       OUTPUT_FOLDER: out\Release
 
     - BUILD_TYPE: 386_shared
@@ -29,19 +29,19 @@ environment:
       MINGW_PATH: C:\msys64\mingw64\bin
       CMAKE_FLAGS: -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
-      ARTIFACT_PREFIX: libui-static-mingw-x64
+      ARTIFACT_PREFIX: static-mingw-x64
       OUTPUT_FOLDER: out
 
     - BUILD_TYPE: amd64_msvc_static
       CMAKE_FLAGS: -G "Visual Studio 12 2013 Win64" -DBUILD_SHARED_LIBS=OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      ARTIFACT_PREFIX: libui-static-windows-x64
+      ARTIFACT_PREFIX: static-windows-x64
       OUTPUT_FOLDER: out\Release
 
     - BUILD_TYPE: amd64_shared
       CMAKE_FLAGS: -G "Visual Studio 12 2013 Win64"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
-      ARTIFACT_PREFIX: libui-shared-windows-x64
+      ARTIFACT_PREFIX: shared-windows-x64
       OUTPUT_FOLDER: out\Release
 
 
@@ -69,12 +69,12 @@ after_build:
     - 7z a -tgzip libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar.gz libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar
     - del /F /Q %ARTIFACTS_TMP_PATH%\*.*
     - copy %OUTPUT_FOLDER%\*.* %ARTIFACTS_TMP_PATH%
-    - 7z a -ttar libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar %ARTIFACTS_TMP_PATH%\*.*
-    - 7z a -tgzip libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar.gz libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar
+    - 7z a -ttar examples-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar %ARTIFACTS_TMP_PATH%\*.*
+    - 7z a -tgzip examples-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar.gz examples-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar
     - dir /S *.tar.gz
 
 artifacts:
-  - path: '*.tar.gz'
+  - path: '**/*.tar.gz'
 
 deploy:
   provider: GitHub
