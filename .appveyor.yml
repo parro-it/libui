@@ -23,7 +23,7 @@ environment:
       CMAKE_FLAGS: -G "Visual Studio 12 2013"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       ARTIFACT_PREFIX: shared-windows-ia32
-      OUTPUT_FOLDER: out
+      OUTPUT_FOLDER: out\Release
 
     - BUILD_TYPE: amd64_mingw_static
       MINGW_PATH: C:\msys64\mingw64\bin
