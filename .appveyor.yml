@@ -11,32 +11,38 @@ environment:
       CMAKE_FLAGS: -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ARTIFACT_PREFIX: libui-static-mingw-ia32
+      OUTPUT_FOLDER: out
 
     - BUILD_TYPE: 386_msvc_static
       CMAKE_FLAGS: -G "Visual Studio 12 2013" -DBUILD_SHARED_LIBS=OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       ARTIFACT_PREFIX: libui-static-windows-ia32
+      OUTPUT_FOLDER: out\Release
 
     - BUILD_TYPE: 386_shared
       CMAKE_FLAGS: -G "Visual Studio 12 2013"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       ARTIFACT_PREFIX: shared-windows-ia32
+      OUTPUT_FOLDER: out
 
     - BUILD_TYPE: amd64_mingw_static
       MINGW_PATH: C:\msys64\mingw64\bin
       CMAKE_FLAGS: -G "MinGW Makefiles" -DBUILD_SHARED_LIBS=OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
       ARTIFACT_PREFIX: libui-static-mingw-x64
+      OUTPUT_FOLDER: out
 
     - BUILD_TYPE: amd64_msvc_static
       CMAKE_FLAGS: -G "Visual Studio 12 2013 Win64" -DBUILD_SHARED_LIBS=OFF
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       ARTIFACT_PREFIX: libui-static-windows-x64
+      OUTPUT_FOLDER: out\Release
 
     - BUILD_TYPE: amd64_shared
       CMAKE_FLAGS: -G "Visual Studio 12 2013 Win64"
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       ARTIFACT_PREFIX: libui-shared-windows-x64
+      OUTPUT_FOLDER: out\Release
 
 
 before_build:
@@ -53,15 +59,16 @@ build_script:
       )
 
 after_build:
+    - dir %OUTPUT_FOLDER%
     - set ARTIFACTS_TMP_PATH=C:\tmp\tmp-artifacts
     - mkdir %ARTIFACTS_TMP_PATH%
-    - copy out\Release\libui.* %ARTIFACTS_TMP_PATH%
+    - copy %OUTPUT_FOLDER%\libui.* %ARTIFACTS_TMP_PATH%
     - copy ../ui.h %ARTIFACTS_PATH%
     - copy ../ui_windows.h %ARTIFACTS_PATH%
     - 7z a -ttar libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar %ARTIFACTS_TMP_PATH%\*.*
     - 7z a -tgzip libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar.gz libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar
     - del %ARTIFACTS_TMP_PATH%\*.*
-    - copy out\Release\*.* %ARTIFACTS_TMP_PATH%
+    - copy %OUTPUT_FOLDER%\*.* %ARTIFACTS_TMP_PATH%
     - 7z a -ttar libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar %ARTIFACTS_TMP_PATH%\*.*
     - 7z a -tgzip libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar.gz libui-%ARTIFACT_PREFIX%-%APPVEYOR_REPO_TAG_NAME%.tar
     - dir /S *.tar.gz
