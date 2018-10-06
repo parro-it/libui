@@ -18,6 +18,11 @@ _add_example(controlgallery
 	${_EXAMPLE_RESOURCES_RC}
 )
 
+_add_example(chinese
+	chinese/main.c
+	${_EXAMPLE_RESOURCES_RC}
+)
+
 _add_example(histogram
 	histogram/main.c
 	${_EXAMPLE_RESOURCES_RC}
@@ -54,6 +59,7 @@ _add_example(datetime
 
 add_custom_target(examples
 	DEPENDS
+		chinese
 		controlgallery
 		histogram
 		cpp-multithread
